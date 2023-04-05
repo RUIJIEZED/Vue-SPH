@@ -39,24 +39,29 @@ VueRouter.prototype.replace = function (location, resole, reject) {
 export default new VueRouter({
   // 配置路由
   routes: [
+    // 主页路由
     {
       path: '/home',
       component: Home,
       meta: { show: true },
     },
+    // 登录路由
     {
       path: '/login',
       component: Login,
       meta: { show: false },
     },
+    // 注册路由
     {
       path: '/register',
       component: Register,
       meta: { show: false },
 
     },
+    // 搜索路由
     {
-      path: '/search/:keyword',
+      path: '/search/:keyword?',
+      // path: '/search',
       component: Search,
       name: 'search',
       meta: { show: true },

@@ -13,20 +13,26 @@
         <a href="###">秒杀</a>
       </nav>
       <div class="sort">
-        <div class="all-sort-list2" @click="goSearch()">
+        <div class="all-sort-list2" @click="goSearch">
           <div class="item" v-for="(c1,index) in categoryList.slice(0,16)" :key="c1.categoryId" @mouseleave="leaveIndex">
             <h3 @mouseenter="enterIndex(index)" :class="{cur:currentIndex==index}">
-              <a href="#" :data-categoryName="c1.categoryName">{{c1.categoryName}}</a>
+              <a
+              :data-categoryName="c1.categoryName" 
+              :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
             </h3>
             <div class="item-list clearfix" :style="{display:currentIndex==index ? 'block':'none'}">
               <div class="subitem" v-for="(c2) in c1.categoryChild" :key="c2.categoryId">
                 <dl class="fore">
                   <dt>
-                    <a href="#" :data-categoryName="c2.categoryName">{{c2.categoryName}}</a>
+                    <a
+                    :data-categoryName="c2.categoryName" 
+                    :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
                   </dt>
                   <dd>
                     <em v-for="(c3) in c2.categoryChild" :key="c3.categoryId">
-                      <a href="#" :data-categoryName="c3.categoryName">{{c3.categoryName}}</a>
+                      <a 
+                      :data-categoryName="c3.categoryName" 
+                      :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
                     </em>
                   </dd>
                 </dl>
@@ -71,8 +77,24 @@ export default {
 
     // 三级菜单点击路由跳转函数
     goSearch(event) {
-      let element = event.target;
-      console.log(element);
+      let Element = event.target;
+      // 节点有个属性dataset属性，可以获取节点的自定义属性与属性值
+      let { categoryname,category1id,category2id,category3id } = Element.dataset;
+      console.log(categoryname);
+      if (categoryname) {
+        let location = { name:'search',};
+        let query = { categoryName: categoryname};
+        if (category1id){
+          query.category1Id = category1id;
+        } else if(category2id) {
+          query.category2Id = category2id;
+        } else if(category3id){
+          query.category3Id = category3id;
+        }
+        location.query = query;
+        this.$router.push(location);
+        // this.$router.push(name='search',query=query);
+      }
     }
   },
 
