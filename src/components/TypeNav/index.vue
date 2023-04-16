@@ -1,7 +1,7 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <h2 class="all">全部商品分类</h2>
+      <h2 class="all"  @mouseenter="enterShow" @mouseleave="leaveShow">全部商品分类</h2>
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -12,7 +12,7 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort" v-show="show">
+      <div class="sort" v-show="show" >
         <div class="all-sort-list2" @click="goSearch">
           <div class="item" v-for="(c1,index) in categoryList.slice(0,16)" :key="c1.categoryId" @mouseleave="leaveIndex">
             <h3 @mouseenter="enterIndex(index)" :class="{cur:currentIndex==index}">
@@ -100,7 +100,22 @@ export default {
       }
     },
 
-    
+    enterShow() {
+      if(this.$route.path != '/home') {
+        this.show = true;
+      }
+    },
+
+    leaveShow() {
+      currentIndex = -1;
+      if(this.$route.path != '/home') {
+        this.show = false;
+        
+      }
+    },
+
+
+
   },
 
   // 组件挂载完毕，可以向服务器发请求
