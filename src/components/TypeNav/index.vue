@@ -12,7 +12,7 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort">
+      <div class="sort" v-show="show">
         <div class="all-sort-list2" @click="goSearch">
           <div class="item" v-for="(c1,index) in categoryList.slice(0,16)" :key="c1.categoryId" @mouseleave="leaveIndex">
             <h3 @mouseenter="enterIndex(index)" :class="{cur:currentIndex==index}">
@@ -59,13 +59,11 @@ export default {
     return {
       // 用来存储一级菜单默认索引
       currentIndex: -1,
+      show: true,
     }
   },
   methods: {
-    // // 鼠标移入添加高亮
-    // enterIndex(index) {
-    //   this.currentIndex = index;
-    // },
+    // 节流防抖
     enterIndex:throttle(function(index){
       this.currentIndex = index;
     },20),
@@ -77,32 +75,45 @@ export default {
 
     // 三级菜单点击路由跳转函数
     goSearch(event) {
+      // 获取标签元素
       let Element = event.target;
       // 节点有个属性dataset属性，可以获取节点的自定义属性与属性值
       let { categoryname,category1id,category2id,category3id } = Element.dataset;
-      console.log(categoryname);
+      // 判断是否a标签
       if (categoryname) {
         let location = { name:'search',};
         let query = { categoryName: categoryname};
+        // 判断是否a的一级标签
         if (category1id){
           query.category1Id = category1id;
+          // 判断是否a的二级标签
         } else if(category2id) {
           query.category2Id = category2id;
+          // 判断是否a的三级标签
         } else if(category3id){
           query.category3Id = category3id;
         }
+        // 动态的给location添加query属性
         location.query = query;
+        // 路由跳转
         this.$router.push(location);
-        // this.$router.push(name='search',query=query);
       }
-    }
+    },
+
+    
   },
 
   // 组件挂载完毕，可以向服务器发请求
   mounted() {
     // 通过Vuex发送请求，获取数据，存储与仓库当中
-    this.$store.dispatch('categoryList');  
+    this.$store.dispatch('categoryList'); 
+
+    // 用来判断三级菜单在Search组件中显示与隐藏
+    if (this.$route.path!='/home') {
+      this.show = false;
+    }
   },
+
   computed: {
     //数组的写法:目前书写的是大仓库state的K  ...mapState(['home'])
     ...mapState({
