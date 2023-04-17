@@ -1,46 +1,52 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <h2 class="all"  @mouseenter="enterShow" @mouseleave="leaveShow">全部商品分类</h2>
-      <nav class="nav">
-        <a href="###">服装城</a>
-        <a href="###">美妆馆</a>
-        <a href="###">尚品汇超市</a>
-        <a href="###">全球购</a>
-        <a href="###">闪购</a>
-        <a href="###">团购</a>
-        <a href="###">有趣</a>
-        <a href="###">秒杀</a>
-      </nav>
-      <div class="sort" v-show="show" >
-        <div class="all-sort-list2" @click="goSearch">
-          <div class="item" v-for="(c1,index) in categoryList.slice(0,16)" :key="c1.categoryId" @mouseleave="leaveIndex">
-            <h3 @mouseenter="enterIndex(index)" :class="{cur:currentIndex==index}">
-              <a
-              :data-categoryName="c1.categoryName" 
-              :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
-            </h3>
-            <div class="item-list clearfix" :style="{display:currentIndex==index ? 'block':'none'}">
-              <div class="subitem" v-for="(c2) in c1.categoryChild" :key="c2.categoryId">
-                <dl class="fore">
-                  <dt>
-                    <a
-                    :data-categoryName="c2.categoryName" 
-                    :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
-                  </dt>
-                  <dd>
-                    <em v-for="(c3) in c2.categoryChild" :key="c3.categoryId">
-                      <a 
-                      :data-categoryName="c3.categoryName" 
-                      :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
-                    </em>
-                  </dd>
-                </dl>
+      <div  @mouseenter="enterShow" @mouseleave="leaveShow">
+        <h2 class="all">全部商品分类</h2>
+        <transition name="sort">  
+          <div class="sort" v-show="show" >
+          <div class="all-sort-list2" @click="goSearch">
+            <div class="item" v-for="(c1,index) in categoryList.slice(0,16)" :key="c1.categoryId" @mouseleave="leaveIndex">
+              <h3 
+              @mouseenter="enterIndex(index)" 
+              :class="{cur:currentIndex==index}">
+                <a
+                :data-categoryName="c1.categoryName" 
+                :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
+              </h3>
+              <div class="item-list clearfix" :style="{display:currentIndex==index ? 'block':'none'}">
+                <div class="subitem" v-for="(c2) in c1.categoryChild" :key="c2.categoryId">
+                  <dl class="fore">
+                    <dt>
+                      <a
+                      :data-categoryName="c2.categoryName" 
+                      :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
+                    </dt>
+                    <dd>
+                      <em v-for="(c3) in c2.categoryChild" :key="c3.categoryId">
+                        <a 
+                        :data-categoryName="c3.categoryName" 
+                        :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
+                      </em>
+                    </dd>
+                  </dl>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+          </div>
+        </transition>
       </div>
+      <nav class="nav" >
+          <a href="###">服装城</a>
+          <a href="###">美妆馆</a>
+          <a href="###">尚品汇超市</a>
+          <a href="###">全球购</a>
+          <a href="###">闪购</a>
+          <a href="###">团购</a>
+          <a href="###">有趣</a>
+          <a href="###">秒杀</a>
+      </nav>
     </div>
   </div>
 </template>
@@ -99,23 +105,21 @@ export default {
         this.$router.push(location);
       }
     },
-
+    // 在search组件中鼠标进入时显示三级菜单
     enterShow() {
+      
       if(this.$route.path != '/home') {
         this.show = true;
       }
     },
-
+    // 在search组件中鼠标移出时隐藏三级菜单
     leaveShow() {
-      currentIndex = -1;
+      this.currentIndex = -1;
       if(this.$route.path != '/home') {
         this.show = false;
         
       }
     },
-
-
-
   },
 
   // 组件挂载完毕，可以向服务器发请求
@@ -153,6 +157,7 @@ export default {
     margin: 0 auto;
     display: flex;
     position: relative;
+
 
     .all {
       width: 210px;
@@ -268,6 +273,18 @@ export default {
         }
         
       }
+    }
+    // search组件中的三级菜单动画
+    .sort-enter {
+      height: 0;
+      background: #fafafa;
+    }
+    .sort-enter-to {
+      height: 461px;
+      background: #fafafa;
+    }
+    .sort-enter-active {
+      transition: all 0.2s linear;
     }
   }
 }
