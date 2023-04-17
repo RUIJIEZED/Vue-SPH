@@ -1,51 +1,46 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <div  @mouseenter="enterShow" @mouseleave="leaveShow">
+      <div @mouseenter="enterShow" @mouseleave="leaveShow">
         <h2 class="all">全部商品分类</h2>
-        <transition name="sort">  
-          <div class="sort" v-show="show" >
-          <div class="all-sort-list2" @click="goSearch">
-            <div class="item" v-for="(c1,index) in categoryList.slice(0,16)" :key="c1.categoryId" @mouseleave="leaveIndex">
-              <h3 
-              @mouseenter="enterIndex(index)" 
-              :class="{cur:currentIndex==index}">
-                <a
-                :data-categoryName="c1.categoryName" 
-                :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
-              </h3>
-              <div class="item-list clearfix" :style="{display:currentIndex==index ? 'block':'none'}">
-                <div class="subitem" v-for="(c2) in c1.categoryChild" :key="c2.categoryId">
-                  <dl class="fore">
-                    <dt>
-                      <a
-                      :data-categoryName="c2.categoryName" 
-                      :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
-                    </dt>
-                    <dd>
-                      <em v-for="(c3) in c2.categoryChild" :key="c3.categoryId">
-                        <a 
-                        :data-categoryName="c3.categoryName" 
-                        :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
-                      </em>
-                    </dd>
-                  </dl>
+        <transition name="sort">
+          <div class="sort" v-show="show">
+            <div class="all-sort-list2" @click="goSearch">
+              <div class="item" v-for="(c1, index) in categoryList.slice(0, 16)" :key="c1.categoryId"
+                @mouseleave="leaveIndex">
+                <h3 @mouseenter="enterIndex(index)" :class="{ cur: currentIndex == index }">
+                  <a :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">{{ c1.categoryName }}</a>
+                </h3>
+                <div class="item-list clearfix" :style="{ display: currentIndex == index ? 'block' : 'none' }">
+                  <div class="subitem" v-for="(c2) in c1.categoryChild" :key="c2.categoryId">
+                    <dl class="fore">
+                      <dt>
+                        <a :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId">{{ c2.categoryName
+                        }}</a>
+                      </dt>
+                      <dd>
+                        <em v-for="(c3) in c2.categoryChild" :key="c3.categoryId">
+                          <a :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId">{{ c3.categoryName
+                          }}</a>
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          </div>
         </transition>
       </div>
-      <nav class="nav" >
-          <a href="###">服装城</a>
-          <a href="###">美妆馆</a>
-          <a href="###">尚品汇超市</a>
-          <a href="###">全球购</a>
-          <a href="###">闪购</a>
-          <a href="###">团购</a>
-          <a href="###">有趣</a>
-          <a href="###">秒杀</a>
+      <nav class="nav">
+        <a href="###">服装城</a>
+        <a href="###">美妆馆</a>
+        <a href="###">尚品汇超市</a>
+        <a href="###">全球购</a>
+        <a href="###">闪购</a>
+        <a href="###">团购</a>
+        <a href="###">有趣</a>
+        <a href="###">秒杀</a>
       </nav>
     </div>
   </div>
@@ -59,7 +54,7 @@ import throttle from 'lodash/throttle';
 
 export default {
 
-  name : "TypeNav",
+  name: "TypeNav",
 
   data() {
     return {
@@ -70,10 +65,10 @@ export default {
   },
   methods: {
     // 节流防抖
-    enterIndex:throttle(function(index){
+    enterIndex: throttle(function (index) {
       this.currentIndex = index;
-    },20),
-  
+    }, 20),
+
     // 鼠标移出取消高亮
     leaveIndex() {
       this.currentIndex = -1;
@@ -84,51 +79,53 @@ export default {
       // 获取标签元素
       let Element = event.target;
       // 节点有个属性dataset属性，可以获取节点的自定义属性与属性值
-      let { categoryname,category1id,category2id,category3id } = Element.dataset;
+      let { categoryname, category1id, category2id, category3id } = Element.dataset;
       // 判断是否a标签
       if (categoryname) {
-        let location = { name:'search',};
-        let query = { categoryName: categoryname};
+        let location = { name: 'search', };
+        let query = { categoryName: categoryname };
         // 判断是否a的一级标签
-        if (category1id){
+        if (category1id) {
           query.category1Id = category1id;
           // 判断是否a的二级标签
-        } else if(category2id) {
+        } else if (category2id) {
           query.category2Id = category2id;
           // 判断是否a的三级标签
-        } else if(category3id){
+        } else if (category3id) {
           query.category3Id = category3id;
         }
-        // 动态的给location添加query属性
-        location.query = query;
-        // 路由跳转
-        this.$router.push(location);
+        
+        // 合并params query参数
+        if (this.$route.params) {
+          location.params = this.$route.params;
+          // 动态的给location添加query属性
+          location.query = query;
+          // 路由跳转
+          this.$router.push(location);
+        }
       }
     },
+
     // 在search组件中鼠标进入时显示三级菜单
     enterShow() {
-      
-      if(this.$route.path != '/home') {
+      if (this.$route.path != '/home') {
         this.show = true;
       }
     },
+
     // 在search组件中鼠标移出时隐藏三级菜单
     leaveShow() {
       this.currentIndex = -1;
-      if(this.$route.path != '/home') {
+      if (this.$route.path != '/home') {
         this.show = false;
-        
       }
     },
   },
 
   // 组件挂载完毕，可以向服务器发请求
   mounted() {
-    // 通过Vuex发送请求，获取数据，存储与仓库当中
-    this.$store.dispatch('categoryList'); 
-
     // 用来判断三级菜单在Search组件中显示与隐藏
-    if (this.$route.path!='/home') {
+    if (this.$route.path != '/home') {
       this.show = false;
     }
   },
@@ -139,7 +136,7 @@ export default {
       //对象写法,对象的K,给VC新增的属性
       //新增的属性erha,右侧属性值为箭头函数返回的结果。作为新增属性的属性值
       //箭头函数执行，注入一个参数state->大仓库【包含小仓库】
-      categoryList:(state) => {
+      categoryList: (state) => {
         return state.Home.categoryList
       }, //对象简写形式
     }),
@@ -148,7 +145,6 @@ export default {
 </script>
 
 <style lang="less">
-
 .type-nav {
   border-bottom: 2px solid #e1251b;
 
@@ -197,6 +193,7 @@ export default {
           .cur {
             background-color: skyblue;
           }
+
           h3 {
             line-height: 30px;
             font-size: 14px;
@@ -271,22 +268,24 @@ export default {
           //   }
           // }
         }
-        
+
       }
     }
+
     // search组件中的三级菜单动画
     .sort-enter {
       height: 0;
       background: #fafafa;
     }
+
     .sort-enter-to {
       height: 461px;
       background: #fafafa;
     }
+
     .sort-enter-active {
       transition: all 0.2s linear;
     }
   }
 }
-
 </style>

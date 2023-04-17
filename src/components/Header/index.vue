@@ -57,7 +57,17 @@ export default {
       // 字符串形式
       // this.$router.push("/search/" + this.keyword + "?K=" + this.keyword.toUpperCase());
       // 对象形式
-      this.$router.push({name:'search',params:{keyword:this.keyword},query:{k:this.keyword.toUpperCase()}});
+      // this.$router.push({
+      //   name:'search',
+      //   params:{keyword:this.keyword || undefined },
+      // });
+      if (this.$route.query) {
+        let location = {name:'search',params:{keyword:this.keyword || undefined }}
+        location.query = this.$route.query;
+        this.$router.push(location);
+      }
+      
+      
 
     },
   },
