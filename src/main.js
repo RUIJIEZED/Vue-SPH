@@ -13,6 +13,9 @@ import TypeNav from '@/components/TypeNav';
 // 第一个参数：全局组件的名称 第二个参数：哪一个组件
 Vue.component(TypeNav.name,TypeNav);
 
+// 引入mockServe模拟数据
+import '@/mock/mockServe';
+
 
 new Vue({
   render: h => h(App),
