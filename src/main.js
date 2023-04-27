@@ -16,6 +16,9 @@ Vue.component(TypeNav.name,TypeNav);
 // 引入mockServe模拟数据
 import '@/mock/mockServe';
 
+// 引入swiper轮播图样式
+import 'swiper/css/swiper.css';
+
 
 new Vue({
   render: h => h(App),
