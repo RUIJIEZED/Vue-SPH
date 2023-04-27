@@ -6,4 +6,4 @@ import floors from './floors.json';
 
 // mock数据：第一个参数：请求地址，第二个参数：请求数据
 Mock.mock("/mock/banner",{code:200,data:banner}); //模拟首页大轮播图的数据
-Mock.mock("/mock/floors",{code:200,data:floors}); //模拟
+Mock.mock("/mock/floors",{code:200,data:floors}); //模拟页脚品牌logo数据
