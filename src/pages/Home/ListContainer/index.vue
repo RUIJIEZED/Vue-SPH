@@ -5,8 +5,8 @@
       <div class="center">
         <!--banner轮播-->
         <div class="swiper-container" id="mySwiper">
-          <div class="swiper-wrapper" v-for="(carousel,index) in bannerList" :key="carousel.id">
-            <div class="swiper-slide">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide" v-for="(carousel,index) in bannerList" :key="carousel.id">
               <img :src="carousel.imgUrl" />
             </div>
           </div>
@@ -118,26 +118,26 @@ export default {
       bannerList: state => state.Home.bannerList,
     })
   },
-//   updated() {
-    
-//     var mySwiper = new Swiper('.swiper-container', {
-     
-//       loop: true, // 循环模式选项
 
-//       // 如果需要分页器
-//       pagination: {
-//         el: '.swiper-pagination',
-//       },
+  updated() {
+    var mySwiper = new Swiper('.swiper-container', {
 
-//       // 如果需要前进后退按钮
-//       navigation: {
-//         nextEl: '.swiper-button-next',
-//         prevEl: '.swiper-button-prev',
-//       },
-//     })
-//   }
+      loop: true, // 循环模式选项
 
-// }
+      // 如果需要分页器
+      pagination: {
+        el: '.swiper-pagination',
+      },
+
+      // 如果需要前进后退按钮
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    })
+  }
+
+}
 </script>
 
 <style lang="less">
@@ -156,9 +156,7 @@ export default {
       padding: 5px;
       float: left;
     }
-    .swiper-container {
-      
-    }
+
 
     .right {
       float: left;
